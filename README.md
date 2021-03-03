@@ -15,3 +15,5 @@ Second line
 1. файлы с именем оканчивающимся на _override.tf.json
 1. файлы с именем .terraformrc
 1. файлы с именем terraform.rc
+   
+"New line" 
