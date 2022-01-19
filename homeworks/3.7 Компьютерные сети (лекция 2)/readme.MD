@@ -53,3 +53,19 @@
    `arp -d *` очистить ARP кеш полностью.  
    `arp -d 192.168.1.1` удалить только один IP.  
    ![SNAG-0902.png](SNAG-0902.png)  
+   
+1. Развернул и настроил EVE-NG.  
+   ![SNAG-0903.png](SNAG-0903.png)  
+   
+   Разобрался как работает и конфигурируется netplan.  
+   Задание по lldp (UBNT10).  
+   ![SNAG-0907.png](SNAG-0907.png)  
+   
+   Задание по lldp (UBNT10).  
+   ![SNAG-0908.png](SNAG-0908.png) 
+   
+   Задание по vlan, bonding (UBNT10).  
+   ![SNAG-0912.png](SNAG-0912.png)  
+   
+   Задание по vlan, bonding (UBNT10).  
+   ![SNAG-0913.png](SNAG-0913.png) 
