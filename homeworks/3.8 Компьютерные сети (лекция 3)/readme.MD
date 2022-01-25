@@ -6,8 +6,7 @@
 1. Создал dummy0 интерфейс.  
    ![SNAG-0921.png](SNAG-0921.png)  
    
-   Добавил несколько маршрутов.  
-   ![SNAG-0920.png](SNAG-0920.png)  
+   Добавил несколько маршрутов.       
    ![SNAG-0922.png](SNAG-0922.png)  
    ![SNAG-0923.png](SNAG-0923.png)  
    ![SNAG-0924.png](SNAG-0924.png)  
