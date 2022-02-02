@@ -33,6 +33,7 @@
    ![SNAG-1004.png](SNAG-1004.png)  
    
    Открыл сайт на хосте, проверил сертификат.  
+   ![SNAG-1005.png](SNAG-1005.png)  
 
 1. Проверил на уязвимости сайт medinfocenter.ru  
    ![SNAG-1007.png](SNAG-1007.png)  
