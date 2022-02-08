@@ -96,7 +96,7 @@ do
         if (($stat != 0))
         then             
              echo  $ip >>error
-			 exit
+	     exit
         fi
    done
 done
