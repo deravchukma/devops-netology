@@ -119,7 +119,7 @@ import time
 
 dict_service = {'drive.google.com': '0.0.0.0', 'mail.google.com': '0.0.0.0', 'google.com': '0.0.0.0'}
 
-while 1 == 1:
+while True:
     for service, current_ip in dict_service.items():
         new_ip = socket.gethostbyname(service)
         time.sleep(2)
