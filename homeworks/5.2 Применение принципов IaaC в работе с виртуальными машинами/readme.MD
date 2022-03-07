@@ -33,7 +33,8 @@ ansible 2.9.6
 ```
 ![SNAG-0917.png](SNAG-0917.png)  
 
-4.
+4.  
+Пришлось устанавливать vpn, т.к. hashicorp заблокировал доступ к боксам для России.
 ```
 vagrant@server1:~$ docker ps
 CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
