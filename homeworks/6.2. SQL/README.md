@@ -4,7 +4,8 @@
 ```docker pull postgres:12
 docker volume create data
 docker volume create backup
-docker run --rm --name postgres -e POSTGRES_PASSWORD=postgres -ti -p 5432:5432 -v data:/var/lib/postgresql/data -v backup:/var/lib/postgresql/backup postgres:12```  
+docker run --rm --name postgres -e POSTGRES_PASSWORD=postgres -ti -p 5432:5432 -v data:/var/lib/postgresql/data -v backup:/var/lib/postgresql/backup postgres:12
+```  
 ![SNAG-0996.png](SNAG-0996.png)  
   
 ![SNAG-0997.png](SNAG-0997.png)  
@@ -20,7 +21,8 @@ docker exec -it b51998272842 bash
 psql -U postgres -p 5432
 CREATE ROLE "test-admin-user" PASSWORD 'admin' SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;
 CREATE DATABASE test_db;
-exit```  
+exit
+```  
 ![SNAG-0999.png](SNAG-0999.png)  
   
 - в БД test_db создайте таблицу orders и clients (спeцификация таблиц ниже)  
@@ -36,7 +38,8 @@ CREATE TABLE clients (
     страна_проживания varchar(20),
     заказ int REFERENCES orders (id)
 );
-CREATE INDEX ON clients (страна_проживания);```  
+CREATE INDEX ON clients (страна_проживания);
+```  
   
 ![SNAG-1000.png](SNAG-1000.png)  
   
@@ -72,7 +75,8 @@ CREATE INDEX ON clients (страна_проживания);```
 INSERT INTO orders (наименование, цена) VALUES ('Принтер', 3000);
 INSERT INTO orders (наименование, цена) VALUES ('Книга', 500);
 INSERT INTO orders (наименование, цена) VALUES ('Монитор', 7000);
-INSERT INTO orders (наименование, цена) VALUES ('Гитара', 4000);```  
+INSERT INTO orders (наименование, цена) VALUES ('Гитара', 4000);
+```  
 ![SNAG-1007.png](SNAG-1007.png)  
 ![SNAG-1008.png](SNAG-1008.png)  
    
@@ -80,7 +84,8 @@ INSERT INTO orders (наименование, цена) VALUES ('Гитара', 
 INSERT INTO clients (фамилия, страна_проживания) VALUES('Петров Петр Петрович', 'Canada');
 INSERT INTO clients (фамилия, страна_проживания) VALUES('Иоганн Себастьян Бах', 'Japan');
 INSERT INTO clients (фамилия, страна_проживания) VALUES('Ронни Джеймс Дио', 'Russia');
-INSERT INTO clients (фамилия, страна_проживания) VALUES('Ritchie Blackmore', 'Russia');```  
+INSERT INTO clients (фамилия, страна_проживания) VALUES('Ritchie Blackmore', 'Russia');
+```  
 ![SNAG-1009.png](SNAG-1009.png)  
 ![SNAG-1010.png](SNAG-1010.png)  
   
@@ -97,7 +102,8 @@ INSERT INTO clients (фамилия, страна_проживания) VALUES('
 Приведите SQL-запросы для выполнения данных операций.  
 ```update  clients set заказ = 3 where id = 1;
 update  clients set заказ = 4 where id = 2;
-update  clients set заказ = 5 where id = 3;```  
+update  clients set заказ = 5 where id = 3;
+```  
 ![SNAG-1015.png](SNAG-1015.png)  
   
 Приведите SQL-запрос для выдачи всех пользователей, которые совершили заказ, а также вывод данного запроса.  
@@ -132,5 +138,6 @@ update  clients set заказ = 5 where id = 3;```
   
 Проверяем наличие таблиц.  
 ```\d clients
-\d orders```  
+\d orders
+```  
 ![SNAG-1021.png](SNAG-1021.png)  
