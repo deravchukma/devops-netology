@@ -1,7 +1,8 @@
 # Домашнее задание к занятию "6.2. SQL"
 
 1.  
-```docker pull postgres:12
+```
+docker pull postgres:12
 docker volume create data
 docker volume create backup
 docker run --rm --name postgres -e POSTGRES_PASSWORD=postgres -ti -p 5432:5432 -v data:/var/lib/postgresql/data -v backup:/var/lib/postgresql/backup postgres:12
@@ -16,7 +17,8 @@ docker run --rm --name postgres -e POSTGRES_PASSWORD=postgres -ti -p 5432:5432 -
   
 В БД из задачи 1:  
 - создайте пользователя test-admin-user и БД test_db  
-```sudo docker ps
+```
+sudo docker ps
 docker exec -it b51998272842 bash
 psql -U postgres -p 5432
 CREATE ROLE "test-admin-user" PASSWORD 'admin' SUPERUSER CREATEDB CREATEROLE INHERIT LOGIN;
@@ -26,7 +28,8 @@ exit
 ![SNAG-0999.png](SNAG-0999.png)  
   
 - в БД test_db создайте таблицу orders и clients (спeцификация таблиц ниже)  
-```psql -U postgres -d test_db
+```
+psql -U postgres -d test_db
 CREATE TABLE orders (
     id serial primary key,
     наименование varchar(80),
@@ -71,7 +74,8 @@ CREATE INDEX ON clients (страна_проживания);
 *Дальше работал в dbeaver.*  
 Используя SQL синтаксис - наполните таблицы следующими тестовыми данными:  
   
-```INSERT INTO orders (наименование, цена) VALUES ('Шоколад', 10);
+```
+INSERT INTO orders (наименование, цена) VALUES ('Шоколад', 10);
 INSERT INTO orders (наименование, цена) VALUES ('Принтер', 3000);
 INSERT INTO orders (наименование, цена) VALUES ('Книга', 500);
 INSERT INTO orders (наименование, цена) VALUES ('Монитор', 7000);
@@ -80,7 +84,8 @@ INSERT INTO orders (наименование, цена) VALUES ('Гитара', 
 ![SNAG-1007.png](SNAG-1007.png)  
 ![SNAG-1008.png](SNAG-1008.png)  
    
-```INSERT INTO clients (фамилия, страна_проживания) VALUES('Иванов Иван Иванович', 'USA');
+```
+INSERT INTO clients (фамилия, страна_проживания) VALUES('Иванов Иван Иванович', 'USA');
 INSERT INTO clients (фамилия, страна_проживания) VALUES('Петров Петр Петрович', 'Canada');
 INSERT INTO clients (фамилия, страна_проживания) VALUES('Иоганн Себастьян Бах', 'Japan');
 INSERT INTO clients (фамилия, страна_проживания) VALUES('Ронни Джеймс Дио', 'Russia');
@@ -100,7 +105,8 @@ INSERT INTO clients (фамилия, страна_проживания) VALUES('
 4.  
   
 Приведите SQL-запросы для выполнения данных операций.  
-```update  clients set заказ = 3 where id = 1;
+```
+update  clients set заказ = 3 where id = 1;
 update  clients set заказ = 4 where id = 2;
 update  clients set заказ = 5 where id = 3;
 ```  
@@ -137,7 +143,8 @@ update  clients set заказ = 5 where id = 3;
 ![SNAG-1020.png](SNAG-1020.png)  
   
 Проверяем наличие таблиц.  
-```\d clients
+```
+\d clients
 \d orders
 ```  
 ![SNAG-1021.png](SNAG-1021.png)  
