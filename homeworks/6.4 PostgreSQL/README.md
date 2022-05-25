@@ -4,10 +4,12 @@
   
 Используя docker поднимите инстанс PostgreSQL (версию 13). Данные БД сохраните в volume.  
   
+[postgres_13.yml](postgres_13.yml)  
+  
 ```
 docker pull postgres:13
 cd 06-db-04-postgresql/
-docker-compose -f p
+docker-compose -f postgres_13.yml up -d
 ```  
 ![SNAG-0216.png](SNAG-0216.png)  
   
@@ -105,6 +107,9 @@ insert into orders (id, title, price) select * from orders_old;
 Как бы вы доработали бэкап-файл, чтобы добавить уникальность значения столбца `title` для таблиц `test_database`?  
   
 **Добавил свойство UNIQUE для поля `title` таблиц `orders`, `orders_1` и `orders_2`**  
+  
+[test_database_new.sql](test_database_new.sql)  
+  
 ```
 CREATE TABLE public.orders (
     id integer,
