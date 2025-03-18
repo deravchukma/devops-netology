@@ -45,7 +45,7 @@ variable "vpc_name" {
 
 variable "vm_image_family" {
   type        = string
-  default     = "ubuntu-2004-lts"
+  default     = "ubuntu-2204-lts"
   description = "yandex compute family"
 }
 
