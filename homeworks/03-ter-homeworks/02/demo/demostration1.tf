@@ -71,7 +71,7 @@ resource "yandex_compute_instance" "example-a" {
     serial-port-enable = 1
     #ssh-keygen -t ed25519  Забудьте уже про rsa ключи!!
     # ubuntu - дефолтный пользователь в ubuntu :)
-    ssh-keys = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGiVcfW8Wa/DxbBNzmQcwn7hJOj7ji9eoTpFakVnY/AI webinar"
+    ssh-keys = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOAwDcuxsyI3SHYgEFsA1cjwKlYkNOEDq8fhcmUUro6Z dma@ubuntu"
   }
 
 }
@@ -107,7 +107,7 @@ resource "yandex_compute_instance" "example-b" {
     serial-port-enable = 1
     #ssh-keygen -t ed25519  Забудьте уже про rsa ключи!!
     # ubuntu - дефолтный пользователь в ubuntu :)
-    ssh-keys = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGiVcfW8Wa/DxbBNzmQcwn7hJOj7ji9eoTpFakVnY/AI webinar"
+    ssh-keys = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOAwDcuxsyI3SHYgEFsA1cjwKlYkNOEDq8fhcmUUro6Z dma@ubuntu"
   }
 
 }
@@ -144,7 +144,7 @@ resource "yandex_compute_instance" "prod-example-a" {
     serial-port-enable = 1
     #ssh-keygen -t ed25519  Забудьте уже про rsa ключи!!
     # ubuntu - дефолтный пользователь в ubuntu :)
-    ssh-keys = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGiVcfW8Wa/DxbBNzmQcwn7hJOj7ji9eoTpFakVnY/AI webinar"
+    ssh-keys = "ubuntu:ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOAwDcuxsyI3SHYgEFsA1cjwKlYkNOEDq8fhcmUUro6Z dma@ubuntu"
   }
 
 }
