@@ -14,8 +14,8 @@ resource "yandex_vpc_subnet" "develop" {
 }
 
 #считываем данные об образе ОС
-data "yandex_compute_image" "ubuntu-2004-lts" {
-  family = "ubuntu-2004-lts"
+data "yandex_compute_image" "ubuntu-2404-lts" {
+  family = "ubuntu-2404-lts-oslogin"
 }
 
 
@@ -26,7 +26,7 @@ variable "env" {
 
 variable "external_acess_bastion" {
   type    = bool
-  default = false #false true создавать ли бастион
+  default = true #false true создавать ли бастион
 }
 
 #создаем/не создаем бастион
@@ -63,9 +63,9 @@ resource "yandex_compute_instance" "bastion" {
 
   boot_disk {
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu-2004-lts.image_id
+      image_id = data.yandex_compute_image.ubuntu-2404-lts.image_id
       type     = "network-hdd"
-      size     = 5
+      size     = 15
     }
   }
 
@@ -105,9 +105,9 @@ resource "yandex_compute_instance" "example" {
 
   boot_disk {
     initialize_params {
-      image_id = data.yandex_compute_image.ubuntu-2004-lts.image_id
+      image_id = data.yandex_compute_image.ubuntu-2404-lts.image_id
       type     = "network-hdd"
-      size     = 5
+      size     = 15
     }
   }
 
