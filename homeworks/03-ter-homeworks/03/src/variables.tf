@@ -1,5 +1,5 @@
 ###cloud vars
-variable "token" {
+variable "yc_token" {
   type        = string
   description = "OAuth-token; https://cloud.yandex.ru/docs/iam/concepts/authorization/oauth-token"
 }
