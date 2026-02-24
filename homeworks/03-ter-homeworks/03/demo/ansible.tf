@@ -26,14 +26,14 @@ resource "null_resource" "web_hosts_provision" {
   #Запуск ansible-playbook
   provisioner "local-exec" {
     # without secrets
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${abspath(path.module)}/for.ini ${abspath(path.module)}/test.yml"
+    #command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${abspath(path.module)}/for.ini ${abspath(path.module)}/test.yml"
 
     #secrets pass
     #> nonsensitive(jsonencode( {for k,v in random_password.each: k=>v.result}))
     /*
       "{\"netology-develop-platform-web-0\":\"u(qzeC#nKjp*wTOY\",\"netology-develop-platform-web-1\":\"=pA12\\u0026C2eCl[Oe$9\"}"
     */
-    # command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${abspath(path.module)}/for.ini ${abspath(path.module)}/test.yml --extra-vars '{\"secrets\": ${jsonencode({ for k, v in random_password.each : k => v.result })} }'"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ${abspath(path.module)}/for.ini ${abspath(path.module)}/test.yml --extra-vars '{\"secrets\": ${jsonencode({ for k, v in random_password.each : k => v.result })} }'"
 
     # for complex cases instead  --extra-vars "key=value", use --extra-vars "@some_file.json"
 
@@ -42,7 +42,7 @@ resource "null_resource" "web_hosts_provision" {
     #срабатывание триггера при изменении переменных
   }
   triggers = {
-     #always_run      = "${timestamp()}" #всегда т.к. дата и время постоянно изменяются
+    always_run      = "${timestamp()}" #всегда т.к. дата и время постоянно изменяются
     #  always_run_uuid = "${uuid()}"
     # playbook_src_hash = file("${abspath(path.module)}/test.yml") # при изменении содержимого playbook файла
     # ssh_public_key = var.public_key # при изменении переменной with ssh
