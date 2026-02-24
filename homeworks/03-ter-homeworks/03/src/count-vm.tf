@@ -24,5 +24,9 @@ resource "yandex_compute_instance" "web" {
     security_group_ids = [yandex_vpc_security_group.example.id]
   }
 
-  depends_on = [yandex_compute_instance.db]
+  depends_on = [yandex_compute_instance.db_vm]
+
+  metadata = {    
+    ssh-keys = "ubuntu:${local.public_key}"
+  }
 }

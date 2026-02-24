@@ -19,6 +19,7 @@ variable "db_each_vm" {
       cpu         = 2
       ram         = 4
       disk_volume = 25
+      platform_id = "standard-v1"
     }
   ]
 }
@@ -46,5 +47,9 @@ resource "yandex_compute_instance" "db_vm" {
     subnet_id          = yandex_vpc_subnet.develop.id
     nat                = true
     security_group_ids = [yandex_vpc_security_group.example.id]
+  }
+
+  metadata = {    
+    ssh-keys = "ubuntu:${local.public_key}"
   }
   }
