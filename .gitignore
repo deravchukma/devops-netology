@@ -1,1 +1,35 @@
 /.idea/
+
+# ---------------------------------------------------------------- Terraform (для всех заданий сразу)
+# Правила в каталогах заданий (03-ter-homeworks, terraform) действуют только там: из-за этого
+# terraform.tfstate задания 05-virt-04 попал в git. Здесь - на весь репозиторий.
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+# Значения переменных (personal.auto.tfvars, terraform.tfvars): токены, ID облака, ключи.
+*.tfvars
+!*.tfvars.example
+# План: внутри значения переменных, в том числе секретных
+tfplan
+*.tfplan
+# Локальные переопределения ресурсов
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+# ⚠ .terraform.lock.hcl НЕ исключаем (поэтому не `.terraform*`): его коммитят - в нём контрольные
+#   суммы провайдера.
+
+# ---------------------------------------------------------------- Ключи и секреты
+# Ключ сервисного аккаунта Яндекс Облака (yc iam key create ... -o key.json)
+key.json
+*authorized_key*.json
+*.pem
+*.key
+*.p12
+*.pfx
+.env
+.env.*
+!.env.example

@@ -1,0 +1,93 @@
+#!/usr/bin/env bash
+# pre-commit: не пускает в коммит секреты (токены, ключи, незашифрованный vault.yml).
+#
+# Исходник - homelab/githooks/pre-commit. Копии - ОДИНАКОВЫЕ, править только исходник и копировать:
+#   devops-netology/githooks/pre-commit - версионируется вместе с тем репозиторием;
+#   ~/.config/git/hooks/pre-commit на учебной ВМ - раскладывает Ansible (роль devops_tools).
+#
+# Включение - ОДИН РАЗ после каждого git clone. Сам git хуки из репозитория не включает - иначе любой
+# склонированный репозиторий мог бы выполнить у вас свой код:
+#   git config core.hooksPath githooks
+# ⚠ При заданном core.hooksPath хуки из .git/hooks не работают (в т.ч. Git LFS), а фреймворк
+#   pre-commit отказывается ставиться. Понадобится он - git config --unset core.hooksPath.
+#
+# Что проверяется в каждом staged-файле:
+#   1. Имя: key.json, *authorized_key*.json, *.pem, *.key, *.tfstate, *.tfvars, .env ... - они в
+#      .gitignore, и сюда попадают только через `git add -f`, то есть по ошибке.
+#   2. vault.yml не зашифрован (первая строка не $ANSIBLE_VAULT).
+#   3. ДОБАВЛЕННЫЕ строки - на токены и ключи (список PATTERNS). Именно добавленные, а не весь
+#      файл: иначе одно ложное срабатывание в уже закоммиченной выгрузке блокировало бы каждое
+#      следующее изменение этого файла.
+#
+# ⚠ Значения НЕ печатаются - только файл, строка и вид секрета: вывод хука виден в терминале и в
+#   журнале Git в VS Code, а оттуда легко уезжает в чат (так в deploy-youtrack дважды засветился
+#   токен бота).
+# Ложное срабатывание - проверить строку глазами и `git commit --no-verify`.
+#
+# НЕ set -e: grep штатно возвращает 1, когда ничего не нашёл.
+set -uo pipefail
+
+# «вид секрета|регулярное выражение (grep -E)». Шаблоны нарочно узкие: с префиксом и длиной, чтобы
+# не ловить обычный текст.
+PATTERNS=(
+    "OAuth-токен Яндекса|y0_[A-Za-z0-9_-]{30,}"
+    "OAuth-токен Яндекса (старый формат)|AQAAAAA[A-Za-z0-9_-]{30,}"
+    "IAM-токен Яндекса|t1\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{40,}"
+    "Статический ключ Яндекса (идентификатор)|YCAJ[A-Za-z0-9_-]{20,}"
+    "Статический ключ Яндекса (секрет)|\bYC[A-Za-z0-9_-]{38}\b"
+    "Приватный ключ|-----BEGIN ([A-Z]+ )*PRIVATE KEY-----"
+    "Ключ сервисного аккаунта (JSON)|\"private_key\"[[:space:]]*:"
+    "Ключ API Anthropic|sk-ant-[A-Za-z0-9_-]{20,}"
+    "Токен GitHub|gh[pousr]_[A-Za-z0-9]{36,}|github_pat_[A-Za-z0-9_]{50,}"
+    "Токен Telegram-бота|\b[0-9]{8,10}:AA[A-Za-z0-9_-]{33}\b"
+)
+
+# Файлы, которым в git не место по самому имени (все они в .gitignore).
+DANGER_NAME='(^|/)(key\.json|[^/]*authorized_key[^/]*\.json|\.env|\.env\.[^/]*|[^/]*\.(pem|key|p12|pfx|tfplan|tfvars|auto\.pkrvars\.hcl)|[^/]*\.tfstate(\.[^/]*)?)$'
+SAFE_NAME='(\.tfvars\.example|\.env\.example)$'
+
+problems=()
+
+# Добавленные строки staged-версии файла: «номер<TAB>текст». Номер - в новой версии файла.
+added_lines() {
+    git diff --cached -U0 --no-color --no-ext-diff -- "$1" | awk '
+        /^@@/     { match($0, /\+[0-9]+/); n = substr($0, RSTART + 1, RLENGTH - 1) + 0; next }
+        /^\+\+\+/ { next }
+        /^\+/     { print n "\t" substr($0, 2); n++ }'
+}
+
+while IFS= read -r -d '' f; do
+    # Сам хук содержит шаблоны (они себя не ловят, но проверять его незачем).
+    [[ "$f" == githooks/pre-commit ]] && continue
+
+    if [[ "$f" =~ $DANGER_NAME && ! "$f" =~ $SAFE_NAME ]]; then
+        problems+=("$f: файл с секретами по имени (он в .gitignore - добавлен через git add -f?)")
+    fi
+
+    if [[ "$f" =~ (^|/)vault\.yml$ ]]; then
+        if [[ "$(git show ":$f" 2>/dev/null | head -c 14)" != '$ANSIBLE_VAULT' ]]; then
+            problems+=("$f: vault.yml НЕ зашифрован - ansible-vault encrypt $f")
+        fi
+    fi
+
+    lines=$(added_lines "$f")
+    [[ -z "$lines" ]] && continue
+    for p in "${PATTERNS[@]}"; do
+        label=${p%%|*}
+        re=${p#*|}
+        while IFS= read -r n; do
+            [[ -n "$n" ]] && problems+=("$f:$n: $label")
+        done < <(printf '%s\n' "$lines" | grep -E -- "$re" | cut -f1)
+    done
+done < <(git diff --cached --name-only -z --diff-filter=ACMR)
+
+if ((${#problems[@]})); then
+    {
+        echo "pre-commit: коммит остановлен - похоже на секреты (значения не печатаются):"
+        printf '  %s\n' "${problems[@]}"
+        echo "Убрать секрет из файла (и из индекса: git restore --staged <файл>) и закоммитить снова."
+        echo "Ложное срабатывание - проверить строку глазами и git commit --no-verify."
+    } >&2
+    exit 1
+fi
+exit 0

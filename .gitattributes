@@ -1,0 +1,3 @@
+# Хуки git выполняет bash: CRLF в первой строке ломает запуск (`bash\r: bad interpreter`). На Windows
+# с core.autocrlf=true git при checkout поставил бы CRLF - поэтому LF закреплён явно.
+githooks/** text eol=lf
