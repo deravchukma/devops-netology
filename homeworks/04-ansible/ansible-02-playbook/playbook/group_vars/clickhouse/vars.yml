@@ -1,0 +1,10 @@
+---
+clickhouse_version: "22.3.3.44"
+# Порядок важен, clickhouse-client и clickhouse-server зависят от clickhouse-common-static, поэтому clickhouse-common-static ставится первым
+clickhouse_packages:
+  - name: clickhouse-common-static
+    arch: amd64
+  - name: clickhouse-client
+    arch: all
+  - name: clickhouse-server
+    arch: all

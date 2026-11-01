@@ -1,0 +1,16 @@
+---
+# Генерируется terraform (terraform/ansible.tf), вручную не править
+all:
+  vars:
+    ansible_user: ubuntu
+    # ВМ создаются заново - ключ хоста принимаем при первом подключении
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=accept-new"
+  children:
+    clickhouse:
+      hosts:
+        clickhouse-01:
+          ansible_host: 51.250.76.117
+    vector:
+      hosts:
+        vector-01:
+          ansible_host: 51.250.71.134
