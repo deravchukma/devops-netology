@@ -1,0 +1,18 @@
+---
+# Генерируется terraform (terraform/ansible.tf), вручную не править
+all:
+  vars:
+    ansible_user: ubuntu
+    # ВМ создаются заново - ключ хоста принимаем при первом подключении
+    ansible_ssh_common_args: "-o StrictHostKeyChecking=accept-new"
+  children:
+%{ for group in distinct([for vm in vms : vm.group]) ~}
+    ${group}:
+      hosts:
+%{ for vm in vms ~}
+%{ if vm.group == group ~}
+        ${vm.vm_name}:
+          ansible_host: ${hosts[vm.vm_name].network_interface[0].nat_ip_address}
+%{ endif ~}
+%{ endfor ~}
+%{ endfor ~}
