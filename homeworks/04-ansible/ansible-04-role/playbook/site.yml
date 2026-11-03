@@ -1,0 +1,41 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+  roles:
+    - role: clickhouse
+      tags: [clickhouse]
+
+- name: Install Vector
+  hosts: vector
+  roles:
+    - role: vector
+      tags: [vector]
+
+- name: Install LightHouse
+  hosts: lighthouse
+  pre_tasks:
+    - name: Install nginx package
+      become: true
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+      tags: [nginx, install]
+    - name: Disable nginx default site
+      become: true
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: Reload nginx
+      tags: [nginx, config]
+    - name: Start nginx service
+      become: true
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+      tags: [nginx]
+  roles:
+    - role: lighthouse
+      tags: [lighthouse]

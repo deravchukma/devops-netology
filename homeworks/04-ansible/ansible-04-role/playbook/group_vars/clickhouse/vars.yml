@@ -1,0 +1,5 @@
+---
+clickhouse_version: "22.3.3.44"
+# БД для логов: роль создаёт её через CREATE DATABASE IF NOT EXISTS
+clickhouse_dbs_custom:
+  - name: logs

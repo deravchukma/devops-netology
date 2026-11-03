@@ -1,0 +1,4 @@
+---
+# Скачанные роли (ansible-galaxy install -p roles) проверяются в своих репозиториях
+exclude_paths:
+  - roles/
