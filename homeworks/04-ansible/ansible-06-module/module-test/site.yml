@@ -1,0 +1,9 @@
+---
+- name: Test my_own_module
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create file with my_own_module
+      my_own_module:
+        path: /tmp/my_own_module_playbook.txt
+        content: "Hello from playbook!\n"
